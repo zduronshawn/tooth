@@ -1,0 +1,30 @@
+.App {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana,
+    sans-serif Lucida Sans Unicode, Tahoma, Sans-Serif;
+  counter-reset: section;
+}
+
+.quiz-form {
+  margin: 0 auto;
+  max-width: 1280px;
+}
+
+[class$="-section"] {
+  padding: 30px 0 60px;
+  flex-direction: row-reverse;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+@media (min-width: 480px) {
+  [class$="-section"] {
+    padding: 45px 100px 60px;
+    flex-direction: row-reverse;
+    align-items: flex-start;
+    justify-content: flex-end;
+  }
+}
+.btn-section {
+  padding-top: 0;
+  padding-bottom: 20px;
+}
