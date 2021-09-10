@@ -27,7 +27,7 @@ const RadioItem: React.FC<RadioItemProps> = ({
       >
         {options.map((option) => {
           return (
-            <div key={id + option.label}>
+            <div className="radio-group-option" key={id + option.label}>
               <div
                 className={classNames("radio-field", {
                   checked: value === option.value,
