@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./index.css";
 import submitQuiz from "../../api/submitQuiz";
 interface UserInfoItemProps {
@@ -15,10 +15,15 @@ interface UserInfoItemProps {
   id: string;
 }
 
+const PhoneFormat = "(###)-###-####";
+function isNumeric(val: string) {
+  return /^-?\d+$/.test(val);
+}
 const UserInfoItem: React.FC<UserInfoItemProps> = ({ id, quizResult }) => {
   const [email, setEmail] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const phoneNumberRef = useRef<HTMLInputElement>(null);
   const submit = () => {
     const params = {
       postal_code: zipCode,
@@ -33,7 +38,7 @@ const UserInfoItem: React.FC<UserInfoItemProps> = ({ id, quizResult }) => {
       user_dental_work: quizResult.dentalWork,
       user_aligner_plan: "",
       user_additional_plan: "",
-      user_insurance_type: ""
+      user_insurance_type: "",
     };
     console.log(params);
     submitQuiz(params)
@@ -44,6 +49,16 @@ const UserInfoItem: React.FC<UserInfoItemProps> = ({ id, quizResult }) => {
         console.error(error);
       });
   };
+  useEffect(() => {
+    const phoneNumberArr = [...phoneNumber].reverse();
+    const index = phoneNumberArr.findIndex((num) => isNumeric(num));
+    if (index !== -1) {
+      const pos = phoneNumberArr.length - index;
+      phoneNumberRef.current?.setSelectionRange(pos, pos);
+    } else {
+      phoneNumberRef.current?.setSelectionRange(1, 1);
+    }
+  }, [phoneNumber]);
   return (
     <section className="user-info-section" id={id}>
       <div className=" input-field">
@@ -71,12 +86,28 @@ const UserInfoItem: React.FC<UserInfoItemProps> = ({ id, quizResult }) => {
       <div className=" input-field">
         <label htmlFor="phoneNumber">phone(optional)</label>
         <input
+          ref={phoneNumberRef}
           placeholder="(###)-###-####"
           name="phoneNumber"
           type="tel"
           value={phoneNumber}
           onChange={(e) => {
-            setPhoneNumber(e.target.value);
+            console.log(e);
+            const value = e.target.value;
+            let num = value.replace(/[^0-9]/g, "");
+            let numArr = [...num];
+            let phoneNumArr = [...PhoneFormat];
+            for (let i = 0; i < phoneNumArr.length; i++) {
+              if (phoneNumArr[i] === "#") {
+                if (numArr.length > 0) {
+                  phoneNumArr[i] = numArr[0];
+                  numArr.shift();
+                  if (numArr.length === 0) break;
+                }
+              }
+            }
+
+            setPhoneNumber(phoneNumArr.join(""));
           }}
         />
       </div>
