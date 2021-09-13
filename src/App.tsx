@@ -3,6 +3,8 @@ import RadioItem from "./components/radio-item/RadioItem";
 import UserInfoItem from "./components/user-info-item/UserInfoItem";
 import { useEffect, useState } from "react";
 import useIndiator from "./hooks/useIndicator";
+import { elementScrollIntoView } from "seamless-scroll-polyfill";
+
 import {
   LevelOptions,
   JudgeOptions,
@@ -12,6 +14,7 @@ import {
   CrowdingOptions,
   SpacingOptions,
 } from "./constants/options";
+
 const defaultOrders = [
   { label: "motivation", complete: false },
   { label: "prevBraces", complete: false },
@@ -36,13 +39,15 @@ export default function App() {
   useEffect(() => {
     if (index >= 0) {
       const ele = document.getElementById(defaultOrders[index].label);
-      ele?.scrollIntoView({ behavior: "smooth" });
+      //   ele?.scrollIntoView({ behavior: "smooth" });
+      ele && elementScrollIntoView(ele, { behavior: "smooth" });
     }
   }, [index]);
   useEffect(() => {
     if (complete) {
       const ele = document.getElementById("userInfo");
-      ele?.scrollIntoView({ behavior: "smooth" });
+      //   ele?.scrollIntoView({ behavior: "smooth" });
+      ele && elementScrollIntoView(ele, { behavior: "smooth" });
     }
   }, [complete]);
   return (

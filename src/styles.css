@@ -1,4 +1,5 @@
 .App {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   counter-reset: section;
 }
 
